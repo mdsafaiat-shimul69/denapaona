@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+
+    <title>DenaPaona - Smart Money & Tour Ledger</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <!-- LOGIN / SIGNUP SECTION -->
+    <section id="authSection" class="auth-section">
+        <div class="auth-card">
+            <div class="brand">
+                <div class="brand-icon">DP</div>
+                <h1>Dena<span>Paona</span></h1>
+            </div>
+
+            <p class="tagline">Your Money. Your Tour. Your Control.</p>
+
+            <div class="auth-heading">
+                <h2 id="authTitle">Welcome Back!</h2>
+                <p id="authSubtitle">Login to manage your money & tour records.</p>
+            </div>
+
+            <form id="authForm">
+                <div class="input-group" id="nameGroup" hidden>
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your name">
+                </div>
+
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="example@gmail.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required minlength="6">
+                </div>
+
+                <button type="submit" class="primary-btn" id="authButton">
+                    Login to Account
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                <span id="switchText">Don't have an account?</span>
+                <button type="button" id="switchAuth">Sign Up</button>
+            </p>
+
+            <p class="auth-footer">Securely manage your DenaPaona.</p>
+        </div>
+    </section>
+
+
+    <!-- MAIN APPLICATION -->
+    <main id="appSection" class="app-section" hidden>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand sidebar-brand">
+                <div class="brand-icon">DP</div>
+                <h1>Dena<span>Paona</span></h1>
+            </div>
+
+            <nav class="side-nav">
+                <button class="nav-item active" data-page="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    Dashboard
+                </button>
+
+                <button class="nav-item" data-page="tours">
+                    <i data-lucide="compass"></i>
+                    Group Tour
+                    <span class="nav-badge tour-pill-badge" id="sideTourBadge" hidden>0</span>
+                </button>
+
+                <button class="nav-item" data-page="connections">
+                    <i data-lucide="users"></i>
+                    Connections
+                </button>
+
+                <button class="nav-item" data-page="ledger">
+                    <i data-lucide="book-open"></i>
+                    Cost Sheet
+                </button>
+
+                <button class="nav-item" data-page="requests">
+                    <i data-lucide="bell"></i>
+                    Notifications
+                    <span class="nav-badge" id="sideNotifBadge" hidden>0</span>
+                </button>
+
+                <button class="nav-item" data-page="profile">
+                    <i data-lucide="user"></i>
+                    My Profile
+                </button>
+            </nav>
+
+            <button class="logout-btn" id="logoutBtn">
+                <i data-lucide="log-out"></i>
+                Logout
+            </button>
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <section class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="welcome-text">Welcome back,</p>
+                    <h2 id="userName">User</h2>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notif-wrapper">
+                        <button class="icon-btn notif-icon-btn" id="topBellBtn" aria-label="Notifications">
+                            <i data-lucide="bell"></i>
+                            <span class="dot-badge" id="topNotifDot" hidden></span>
+                        </button>
+
+                        <!-- Quick Notification Dropdown -->
+                        <div class="notif-dropdown" id="notifDropdown" hidden>
+                            <div class="notif-drop-header">
+                                <span>Notifications & Requests</span>
+                                <button type="button" class="text-btn" data-page="requests" id="viewAllNotifsBtn">View All</button>
+                            </div>
+                            <div id="quickNotifList" class="notif-drop-body">
+                                <p class="empty-drop">No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="avatar" id="userAvatar">U</div>
+                </div>
+            </header>
+
+
+            <!-- DASHBOARD PAGE -->
+            <section class="page active" id="dashboard">
+                <div class="page-heading">
+                    <div>
+                        <h2>Dashboard</h2>
+                        <p>Overview of your personal financial activities.</p>
+                    </div>
+
+                    <div class="heading-actions">
+                        <button class="secondary-btn small-btn" data-page="tours">
+                            <i data-lucide="compass"></i>
+                            Group Tour
+                        </button>
+                        <button class="primary-btn small-btn" id="addRequestBtn">
+                            <i data-lucide="plus"></i>
+                            New Request
+                        </button>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="card-top">
+                            <span>Total Receivable</span>
+                            <div class="card-icon green">
+                                <i data-lucide="trending-up"></i>
+                            </div>
+                        </div>
+                        <h2 id="totalReceivable">৳ 0.00</h2>
+                        <p>Remaining money to receive</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-top">
+                            <span>Total Payable</span>
+                            <div class="card-icon red">
+                                <i data-lucide="trending-down"></i>
+                            </div>
+                        </div>
+                        <h2 id="totalPayable">৳ 0.00</h2>
+                        <p>Remaining money to pay</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-top">
+                            <span>Total Cleared (ফেরত)</span>
+                            <div class="card-icon purple">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                        </div>
+                        <h2 id="totalCleared">৳ 0.00</h2>
+                        <p>Total amount settled/paid back</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="card-top">
+                            <span>Net Balance</span>
+                            <div class="card-icon blue">
+                                <i data-lucide="wallet"></i>
+                            </div>
+                        </div>
+                        <h2 id="netBalance">৳ 0.00</h2>
+                        <p id="netBalanceLabel">Your overall balance</p>
+                    </div>
+                </div>
+
+                <!-- Individual Person Balance Summary with One-Click Settle -->
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 14px;">
+                        <div>
+                            <h3>Person-wise Balance</h3>
+                            <p>Net receivable or payable with each connected user. Click Settle to clear dues in one click.</p>
+                        </div>
+                    </div>
+                    <div id="personSummaryList">
+                        <p style="color: var(--muted); font-size: 13px;">No accepted balances yet.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 14px;">
+                        <div>
+                            <h3>Recent Transactions</h3>
+                            <p>Your latest accepted money records.</p>
+                        </div>
+
+                        <button class="text-btn" data-page="ledger">
+                            View All
+                        </button>
+                    </div>
+
+                    <div id="recentTransactionsList">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="receipt-text"></i>
+                            </div>
+                            <h3>No Transactions Yet</h3>
+                            <p>Your accepted money requests will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ==========================================
+                 GROUP TOUR COST SHEET PAGE
+            ========================================== -->
+            <section class="page" id="tours">
+                <!-- View 1: All Tours List -->
+                <div id="toursListView">
+                    <div class="page-heading">
+                        <div>
+                            <h2>Group Tour Cost Sheets</h2>
+                            <p>Manage shared group tour funds, manager expenses & equal split.</p>
+                        </div>
+
+                        <button class="primary-btn small-btn" id="openCreateTourBtn">
+                            <i data-lucide="plus"></i>
+                            Create a Tour Cost Sheet
+                        </button>
+                    </div>
+
+                    <div id="myToursGrid" class="tours-grid">
+                        <div class="content-card" style="grid-column: 1 / -1;">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i data-lucide="compass"></i>
+                                </div>
+                                <h3>No Group Tours Yet</h3>
+                                <p>Click "Create a Tour Cost Sheet" to start a new tour ledger as Manager.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 2: Single Tour Portal (Detail View) -->
+                <div id="tourDetailView" hidden>
+                    <div class="tour-topbar-nav">
+                        <button type="button" class="secondary-btn small-btn" id="backToToursBtn">
+                            ← All Tours
+                        </button>
+                        <div class="export-group">
+                            <button type="button" class="secondary-btn small-btn" id="copyTourWhatsAppBtn">
+                                📋 Copy Summary
+                            </button>
+                            <button type="button" class="secondary-btn small-btn" id="exportTourCsvBtn">
+                                ⬇ Excel / CSV
+                            </button>
+                            <span id="tourRoleBadge" class="role-badge">Member</span>
+                        </div>
+                    </div>
+
+                    <div class="page-heading" style="margin-top: 14px;">
+                        <div>
+                            <h2 id="detailTourTitle">Tour Name</h2>
+                            <p id="detailTourMeta">Manager: Name • 0 Members</p>
+                        </div>
+
+                        <!-- Action Buttons based on Role -->
+                        <div class="heading-actions" id="tourActionButtons"></div>
+                    </div>
+
+                    <!-- Tour 4 Summary Cards -->
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="card-top">
+                                <span>Total Collected (মোট জমা)</span>
+                                <div class="card-icon green">
+                                    <i data-lucide="piggy-bank"></i>
+                                </div>
+                            </div>
+                            <h2 id="tourTotalDeposit">৳ 0.00</h2>
+                            <p>Total deposits + member extra spends</p>
+                        </div>
+
+                        <div class="summary-card">
+                            <div class="card-top">
+                                <span>Total Tour Expense</span>
+                                <div class="card-icon red">
+                                    <i data-lucide="receipt"></i>
+                                </div>
+                            </div>
+                            <h2 id="tourTotalExpense">৳ 0.00</h2>
+                            <p id="tourPerPersonShare">Per person share: ৳ 0.00</p>
+                        </div>
+
+                        <div class="summary-card">
+                            <div class="card-top">
+                                <span>Manager's Stock (হাতে জমা)</span>
+                                <div class="card-icon blue">
+                                    <i data-lucide="briefcase"></i>
+                                </div>
+                            </div>
+                            <h2 id="tourManagerStock">৳ 0.00</h2>
+                            <p>Cash remaining with Manager</p>
+                        </div>
+
+                        <div class="summary-card">
+                            <div class="card-top">
+                                <span>My Tour Status</span>
+                                <div class="card-icon purple">
+                                    <i data-lucide="user-check"></i>
+                                </div>
+                            </div>
+                            <h2 id="tourMyNetStatus">৳ 0.00</h2>
+                            <p id="tourMyNetLabel">Balanced</p>
+                        </div>
+                    </div>
+
+                    <!-- Manager Approval Box -->
+                    <div class="content-card" id="tourPendingApprovalsCard" hidden>
+                        <div class="section-heading" style="margin-bottom: 14px;">
+                            <div>
+                                <h3>Pending Extra Cost Approvals <span class="badge-inline" id="tourPendingCount">0</span></h3>
+                                <p>Members submitted extra expenses from their pocket. Approve to add to Cost Sheet.</p>
+                            </div>
+                        </div>
+                        <div id="tourPendingList"></div>
+                    </div>
+
+                    <!-- Member-wise Breakdown -->
+                    <div class="content-card">
+                        <div class="section-heading" style="margin-bottom: 14px;">
+                            <div>
+                                <h3>Team Member Summary (হিসাবের সারসংক্ষেপ)</h3>
+                                <p>Deposits, extra personal expenses, and final settlement (+ পাবে / - দেবে).</p>
+                            </div>
+                        </div>
+                        <div id="tourMembersSummaryList"></div>
+                    </div>
+
+                    <!-- Tour Expense & Deposit History (With Manager Edit/Delete) -->
+                    <div class="content-card">
+                        <div class="section-heading" style="margin-bottom: 14px;">
+                            <div>
+                                <h3>Tour Cost & Deposit Log</h3>
+                                <p>All manager updates and approved member expenses.</p>
+                            </div>
+                        </div>
+                        <div id="tourHistoryList"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- CONNECTIONS PAGE -->
+            <section class="page" id="connections">
+                <div class="page-heading">
+                    <div>
+                        <h2>Connections</h2>
+                        <p>Search and connect with people via Email or Unique ID.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 16px;">
+                        <div>
+                            <h3>Find & Connect User</h3>
+                            <p>Enter their Email (e.g. friend@gmail.com) or Unique ID (e.g. #DP-1234)</p>
+                        </div>
+                    </div>
+
+                    <form id="searchUserForm" class="search-form">
+                        <input type="text" id="searchQuery" placeholder="Email or #DP-XXXX" required>
+                        <button type="submit" class="primary-btn small-btn" id="searchUserBtn">
+                            <i data-lucide="search"></i>
+                            Search & Connect
+                        </button>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 16px;">
+                        <div>
+                            <h3>Connected People</h3>
+                            <p>People you share ledgers & tours with.</p>
+                        </div>
+                    </div>
+
+                    <div id="connectionsList">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <h3>No Connections Yet</h3>
+                            <p>Search using an Email or #DP-XXXX code above to connect.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PERSONAL COST SHEET PAGE (With CSV Export & WhatsApp Copy) -->
+            <section class="page" id="ledger">
+                <div class="page-heading">
+                    <div>
+                        <h2>Personal Cost Sheet</h2>
+                        <p>All your accepted personal transactions sorted by date.</p>
+                    </div>
+
+                    <div class="heading-actions">
+                        <button type="button" class="secondary-btn small-btn" id="copyPersonalWhatsAppBtn">
+                            📋 Copy Summary
+                        </button>
+                        <button type="button" class="secondary-btn small-btn" id="exportPersonalCsvBtn">
+                            ⬇ Excel / CSV
+                        </button>
+                        <select id="ledgerFilterSelect" class="filter-select">
+                            <option value="all">All Connected Users</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div id="fullLedgerList">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="book-open"></i>
+                            </div>
+                            <h3>Your Cost Sheet is Empty</h3>
+                            <p>Accepted transactions will be listed here.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- NOTIFICATIONS PAGE -->
+            <section class="page" id="requests">
+                <div class="page-heading">
+                    <div>
+                        <h2>Notifications</h2>
+                        <p>Personal requests & Group Tour updates.</p>
+                    </div>
+                </div>
+
+                <!-- Tour Updates & Alerts -->
+                <div class="content-card" id="tourNotificationsCard" hidden>
+                    <div class="section-heading" style="margin-bottom: 14px;">
+                        <div>
+                            <h3>Group Tour Updates & Claims</h3>
+                            <p>Real-time updates from your tour managers & members.</p>
+                        </div>
+                        <button type="button" class="text-btn" id="markTourNotifsReadBtn">Clear All</button>
+                    </div>
+                    <div id="tourNotificationsList"></div>
+                </div>
+
+                <!-- Incoming Personal Requests -->
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 14px;">
+                        <div>
+                            <h3>Incoming Personal Money Requests</h3>
+                            <p>Click OK to add to Personal Cost Sheet.</p>
+                        </div>
+                    </div>
+
+                    <div id="incomingRequestsList">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i data-lucide="bell-ring"></i>
+                            </div>
+                            <h3>No New Notifications</h3>
+                            <p>You are all caught up!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sent Pending Requests -->
+                <div class="content-card">
+                    <div class="section-heading" style="margin-bottom: 14px;">
+                        <div>
+                            <h3>Sent Requests (Waiting for OK)</h3>
+                            <p>Requests you sent that are awaiting approval.</p>
+                        </div>
+                    </div>
+
+                    <div id="sentRequestsList">
+                        <p style="color: var(--muted); font-size: 13px;">No pending sent requests.</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PROFILE PAGE -->
+            <section class="page" id="profile">
+                <div class="page-heading">
+                    <div>
+                        <h2>My Profile</h2>
+                        <p>Your account information.</p>
+                    </div>
+                </div>
+
+                <div class="content-card profile-card">
+                    <div class="avatar large-avatar" id="profileAvatar">U</div>
+                    <h3 id="profileName">User</h3>
+                    <p id="profileEmail">user@example.com</p>
+                    <div class="profile-id">
+                        Unique User ID: <strong>#DP-0000</strong>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         MODALS
+    ========================================== -->
+
+    <!-- 1. PERSONAL MONEY REQUEST MODAL -->
+    <div id="requestModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="requestModalTitle">New Money Record</h3>
+                <button type="button" class="close-modal-btn" id="closeRequestModal">✕</button>
+            </div>
+            <p class="modal-sub">Select the transaction type. It will be added once the other person clicks OK.</p>
+
+            <form id="sendRequestForm">
+                <div class="input-group">
+                    <label>Transaction Type</label>
+                    <div class="type-selector two-by-two">
+                        <label class="type-option paona-opt">
+                            <input type="radio" name="txType" value="paona" checked>
+                            <span><strong>Paona (পাওনা)</strong><br><small>আমি তার কাছে পাবো</small></span>
+                        </label>
+                        <label class="type-option dena-opt">
+                            <input type="radio" name="txType" value="dena">
+                            <span><strong>Dena (দেনা)</strong><br><small>সে আমার কাছে পাবে</small></span>
+                        </label>
+                        <label class="type-option ferot-diyechi-opt">
+                            <input type="radio" name="txType" value="ferot_diyechi">
+                            <span><strong>ফেরত দিয়েছি</strong><br><small>আমি তাকে শোধ করেছি</small></span>
+                        </label>
+                        <label class="type-option ferot-diyeche-opt">
+                            <input type="radio" name="txType" value="ferot_diyeche">
+                            <span><strong>ফেরত দিয়েছে</strong><br><small>সে আমাকে শোধ করেছে</small></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Select Connected Person</label>
+                    <select id="requestReceiverSelect" required>
+                        <option value="">-- Choose a person --</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Amount (৳)</label>
+                    <input type="number" id="requestAmount" placeholder="e.g. 200" min="1" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Description / Reason</label>
+                    <input type="text" id="requestDescription" placeholder="e.g. নগদ ২০০ টাকা ফেরত" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" id="cancelRequestBtn">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitRequestBtn">Send Notification</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 2. CREATE TOUR COST SHEET MODAL -->
+    <div id="createTourModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Create a Tour Cost Sheet</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('createTourModal')">✕</button>
+            </div>
+            <p class="modal-sub">You will be the Manager (Admin) of this tour. Select team members from your connections.</p>
+
+            <form id="createTourForm">
+                <div class="input-group">
+                    <label>Tour Name / Destination</label>
+                    <input type="text" id="tourNameInput" placeholder="e.g. Sajek Valley Tour 2026" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Select Team Members (You are included automatically)</label>
+                    <div id="tourMemberCheckboxes" class="member-checkbox-list">
+                        <p style="color: var(--muted); font-size: 12px;">Loading connections...</p>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('createTourModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitCreateTourBtn">Create Tour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 3. MANAGER ADD DEPOSIT OR EXPENSE MODAL -->
+    <div id="managerEntryModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="managerEntryTitle">Update Tour Cost Sheet</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('managerEntryModal')">✕</button>
+            </div>
+            <p class="modal-sub">Direct Manager update — all team members will be notified automatically.</p>
+
+            <form id="managerEntryForm">
+                <div class="input-group">
+                    <label>Entry Type</label>
+                    <div class="type-selector two-by-two">
+                        <label class="type-option paona-opt">
+                            <input type="radio" name="tourEntryType" value="deposit" checked onchange="toggleTourMemberSelect()">
+                            <span><strong>Deposit (জমা)</strong><br><small>মেম্বার টাকা জমা দিয়েছে</small></span>
+                        </label>
+                        <label class="type-option dena-opt">
+                            <input type="radio" name="tourEntryType" value="expense" onchange="toggleTourMemberSelect()">
+                            <span><strong>Tour Expense</strong><br><small>ফান্ড থেকে খরচ হয়েছে</small></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group" id="tourDepositMemberGroup">
+                    <label>Who Deposited the Money?</label>
+                    <select id="tourDepositMemberSelect"></select>
+                </div>
+
+                <div class="input-group">
+                    <label>Amount (৳)</label>
+                    <input type="number" id="tourEntryAmount" placeholder="e.g. 2000" min="1" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Description / Note</label>
+                    <input type="text" id="tourEntryNote" placeholder="e.g. ১ম কিস্তি জমা / বাস ভাড়া" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('managerEntryModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitManagerEntryBtn">Save & Notify All</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 4. MANAGER EDIT EXISTING TOUR ENTRY MODAL (NEW FEATURE #6) -->
+    <div id="editTourEntryModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Tour Entry</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('editTourEntryModal')">✕</button>
+            </div>
+            <p class="modal-sub">Update amount or description. Team members will be notified of the correction.</p>
+
+            <form id="editTourEntryForm">
+                <input type="hidden" id="editEntryIdInput">
+
+                <div class="input-group">
+                    <label>Amount (৳)</label>
+                    <input type="number" id="editEntryAmountInput" min="1" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Description / Note</label>
+                    <input type="text" id="editEntryDescInput" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('editTourEntryModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitEditEntryBtn">Update Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 5. MANAGER CLAIM MORE MONEY MODAL -->
+    <div id="claimMoneyModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Claim More Tour Fund</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('claimMoneyModal')">✕</button>
+            </div>
+            <p class="modal-sub">Manager stock running low? Notify all team members to deposit an additional amount.</p>
+
+            <form id="claimMoneyForm">
+                <div class="input-group">
+                    <label>Amount Needed Per Person (৳)</label>
+                    <input type="number" id="claimAmountInput" placeholder="e.g. 500" min="1" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Reason / Message</label>
+                    <input type="text" id="claimReasonInput" placeholder="e.g. হোটেল ও রাতের খাবারের জন্য আরও ৫০০ টাকা লাগবে" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('claimMoneyModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitClaimBtn">Notify All Members</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 6. MEMBER SUBMIT EXTRA COST CLAIM MODAL -->
+    <div id="memberExtraCostModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Submit Extra Personal Expense</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('memberExtraCostModal')">✕</button>
+            </div>
+            <p class="modal-sub">Spent money from your own pocket for the tour? Submit it for Manager's approval.</p>
+
+            <form id="memberExtraCostForm">
+                <div class="input-group">
+                    <label>Amount You Spent (৳)</label>
+                    <input type="number" id="extraCostAmountInput" placeholder="e.g. 350" min="1" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label>What did you spend on?</label>
+                    <input type="text" id="extraCostDescInput" placeholder="e.g. সবার জন্য পানি ও চা-নাস্তা" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('memberExtraCostModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn" id="submitExtraCostBtn">Send to Manager</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 7. MANAGER ADD MORE MEMBERS TO EXISTING TOUR MODAL -->
+    <div id="addTourMemberModal" class="modal-overlay" hidden>
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Add Member to Tour</h3>
+                <button type="button" class="close-modal-btn" onclick="closeTourModal('addTourMemberModal')">✕</button>
+            </div>
+            <p class="modal-sub">Select a connected friend to add into this tour.</p>
+
+            <form id="addTourMemberForm">
+                <div class="input-group">
+                    <label>Select User</label>
+                    <select id="existingTourAddSelect" required>
+                        <option value="">-- Choose user --</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn small-btn" onclick="closeTourModal('addTourMemberModal')">Cancel</button>
+                    <button type="submit" class="primary-btn small-btn">Add to Tour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="mobile-nav">
+        <button class="mobile-nav-item active" data-page="dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Home</span>
+        </button>
+
+        <button class="mobile-nav-item" data-page="tours">
+            <i data-lucide="compass"></i>
+            <span>Tour</span>
+        </button>
+
+        <button class="mobile-nav-item" data-page="connections">
+            <i data-lucide="users"></i>
+            <span>Users</span>
+        </button>
+
+        <button class="mobile-nav-item" data-page="ledger">
+            <i data-lucide="book-open"></i>
+            <span>Ledger</span>
+        </button>
+
+        <button class="mobile-nav-item mobile-notif-btn" data-page="requests">
+            <i data-lucide="bell"></i>
+            <span>Alerts</span>
+            <span class="mobile-badge" id="mobileNotifBadge" hidden>0</span>
+        </button>
+
+        <button class="mobile-nav-item" data-page="profile">
+            <i data-lucide="user"></i>
+            <span>Profile</span>
+        </button>
+    </nav>
+
+
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>

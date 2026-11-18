@@ -1,0 +1,19 @@
+{
+  "name": "DenaPaona - Smart Money & Tour Ledger",
+  "short_name": "DenaPaona",
+  "description": "Shared debt, expense and group tour cost sheet app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
